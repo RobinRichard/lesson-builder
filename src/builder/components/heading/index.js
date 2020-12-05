@@ -1,8 +1,9 @@
 import React from "react";
+import { formatStyles } from "../../utils.js";
 
 const Heading = ({ item, onSelect }) => {
   return (
-    <h1 style={item.styles}>
+    <h1 style={formatStyles(item.styles)}>
       {item.value}
       {onSelect && (
         <input

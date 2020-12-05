@@ -1,8 +1,10 @@
 import React from "react";
+import { Style } from "../../styles";
+import { formatStyles } from "../../utils.js";
 
 const Paragraph = ({ item, onSelect }) => {
   return (
-    <p style={item.styles}>
+    <p style={formatStyles(item.styles)}>
       {item.value}
       {onSelect && (
         <input
@@ -19,6 +21,9 @@ const Paragraph = ({ item, onSelect }) => {
 };
 Paragraph.displayName = "Paragraph component";
 
-export const paragrphStyles = { color: "#009688", fontSize: "16px" };
+export const paragrphStyles = [
+  new Style("color", "#009688", ""),
+  new Style("fontSize", "16px"),
+];
 
 export default Paragraph;

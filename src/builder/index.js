@@ -1,30 +1,29 @@
-import React, { useState } from "react";
+import React, { Fragment, useState } from "react";
 import { Dropdown } from "react-bootstrap";
 
 import Heading from "./components/heading";
 import SubHeading from "./components/subHeading";
 import Paragraph, { paragrphStyles } from "./components/paragraph";
 import { Settings } from "./components/settings";
+import { ComplexStyle, Style } from "./styles";
 
 export const Builder = () => {
   const [components, setComponents] = useState([]);
   const [selected, setSelected] = useState(null);
 
-  const addComponent = ({ element, ...rest }) => {
+  const addComponent = ({ element, extraStyles = [] }) => {
     setComponents([
       ...components,
       {
         id: components.length + 1,
         component: element,
         value: element.displayName || "some sample content",
-        styles: {
-          color: "black",
-          paddingTop: "0px",
-          paddingRight: "0px",
-          paddingBottom: "0px",
-          paddingLeft: "0px",
-          ...rest,
-        },
+        styles: [
+          new Style("color", "black", ""),
+          new ComplexStyle("margin", 10, 10, 20, 70),
+          new ComplexStyle("padding", 40, 0, 40, 0),
+          ...extraStyles,
+        ],
       },
     ]);
   };
@@ -43,10 +42,10 @@ export const Builder = () => {
 
   const ComopnentsContainer = () =>
     components.map((item) => (
-      <>
-        <item.component key={item.id} item={item} onSelect={setSelected} />
+      <Fragment key={item.id}>
+        <item.component item={item} onSelect={setSelected} />
         <hr />
-      </>
+      </Fragment>
     ));
 
   return (
@@ -77,7 +76,10 @@ export const Builder = () => {
                   </Dropdown.Item>
                   <Dropdown.Item
                     onClick={() => {
-                      addComponent({ element: Paragraph, ...paragrphStyles });
+                      addComponent({
+                        element: Paragraph,
+                        extraStyles: paragrphStyles,
+                      });
                     }}
                   >
                     Praragraph
@@ -93,7 +95,7 @@ export const Builder = () => {
           {selected && (
             <>
               <h2>Settings</h2>
-              <Settings selected={selected} onSave={onSave} />
+              <Settings key={selected.id} selected={selected} onSave={onSave} />
             </>
           )}
         </div>
